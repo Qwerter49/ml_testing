@@ -1,33 +1,34 @@
-let classifier;
 let video;
-let resultLabel = "";
+let poseNet;
+let pose;
 
-function modelReady(){
-    console.log("Model is ready");
-    classifier.predict(gotResults);
+function modelLoaded(){
+    console.log("Model Loaded");
 }
 
-function gotResults(error, results){
-    if(error){
-        console.error(error);
-    } else {
-        resultLabel = results[0].label;
-        classifier.predict(gotResults)
+function setup(){
+    createCanvas(640, 450);
+    video = createCapture(VIDEO);
+    video.hide();
+    poseNet = ml5.poseNet(video, 'single', modelLoaded);
+    poseNet.on('pose', gotPoses)
+}
+
+function gotPoses(poses){
+    if(poses.length > 0){
+        pose = poses[0].pose;
     }
 }
 
- function setup(){
-    createCanvas(640, 550);
-    video = createCapture(VIDEO);
-    video.hide();
-    background(0);
-    classifier = ml5.imageClassifier('MobileNet', video, modelReady);
-}
 
 function draw(){
-    background(0);
     image(video, 0, 0);
-    fill(255);
-    textSize(32);
-    text(resultLabel, 10, height - 20);
+    if(pose){
+        for(let i = 0; i < pose.keypoints.length; i++){
+            let x = pose.keypoints[i].position.x;
+            let y = pose.keypoints[i].position.y;
+            fill(0,255,0);
+            ellipse(x, y, 16, 16);
+        }
+    }
 }

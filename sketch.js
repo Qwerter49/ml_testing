@@ -3,15 +3,15 @@ let poseNet;
 let pose;
 let skeleton;
 
-function modelLoaded(){
-    console.log("Model Loaded");
-}
+// function modelLoaded(){
+//     console.log("Model Loaded");
+// }
 
 function setup(){
     createCanvas(640, 450);
     video = createCapture(VIDEO);
     video.hide();
-    poseNet = ml5.poseNet(video, 'single', modelLoaded);
+    poseNet = ml5.poseNet(video);
     poseNet.on('pose', gotPoses)
 }
 

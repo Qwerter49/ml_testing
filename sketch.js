@@ -3,10 +3,6 @@ let poseNet;
 let pose;
 let skeleton;
 
-// function modelLoaded(){
-//     console.log("Model Loaded");
-// }
-
 function setup(){
     createCanvas(640, 450);
     video = createCapture(VIDEO);
